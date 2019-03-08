@@ -4,10 +4,17 @@ using Microsoft.JSInterop;
 namespace Blazor.Extensions.Storage.Test.Interop
 {
     /// <summary>
-    /// Interop calls to JavaScript Local and Session storage via Blazor's <see cref="JSRuntime"/>.
+    /// Interop calls to JavaScript Local and Session storage via Blazor's <see cref="jSRuntime"/>.
     /// </summary>
     public class InteropStorage
     {
+        private IJSRuntime jSRuntime;
+
+        public InteropStorage(IJSRuntime jsRuntime)
+        {
+            this.jSRuntime = jsRuntime;
+        }
+
         /// <summary>
         /// Returns a session storage value.
         /// </summary>
@@ -15,7 +22,7 @@ namespace Blazor.Extensions.Storage.Test.Interop
         /// <returns>Task that returns the stored value as a string.</returns>
         public async Task<string> GetSessionStorage(string key)
         {
-            return await JSRuntime.Current.InvokeAsync<string>(
+            return await this.jSRuntime.InvokeAsync<string>(
                 "getSessionStorage",
                 key
             );
@@ -28,7 +35,7 @@ namespace Blazor.Extensions.Storage.Test.Interop
         /// <returns>Task that returns the stored value as a string.</returns>
         public async Task<string> GetLocalStorage(string key)
         {
-            return await JSRuntime.Current.InvokeAsync<string>(
+            return await this.jSRuntime.InvokeAsync<string>(
                 "getLocalStorage",
                 key
             );
